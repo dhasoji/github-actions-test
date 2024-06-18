@@ -65,28 +65,22 @@ jobs:
         run: |
           ls -lrt && pwd
 
-      - name: Get testResults folder files list
-        run: |
-          cd testResults && ls -lrt
+      # - name: Get testResults folder files list
+      #   run: |
+      #     cd testResults && ls -lrt
 
-      - name: Print HTML report content
-        run: |
-          cd testResults && cat htmlreport.html
+      # - name: Print HTML report content
+      #   run: |
+      #     cd testResults && cat htmlreport.html
 
       - name: List files for debugging
         run: ls -R testResults
       
-      - name: create-report
-        # You may pin to the exact commit or the version.
-        # uses: michaelhenry/create-report@8b27e8b1446bf4a1d9af9e67431cc8c78fb3821d
-        uses: michaelhenry/create-report@v2.0.2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          # Title of the report
-          title: htmlreport
-          # File path of the report.
-          path: testResults/htmlreport.html
-          # The data format of the summary either markdown or html.
-          format: html
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./testResults/htmlreport.html
                 
       
                 
