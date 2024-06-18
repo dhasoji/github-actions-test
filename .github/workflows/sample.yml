@@ -72,18 +72,15 @@ jobs:
       - name: Print HTML report content
         run: |
           cd testResults && cat htmlreport.html
-          
+
       - name: List files for debugging
         run: ls -R testResults
       
-      - name: HTML Preview
-        id: html_preview
-        uses: pavi2410/html-preview-action@v2
+      - name: Upload HTML Report as Artifact
+        uses: actions/upload-artifact@v2
         with:
-          html_file: 'testResults/htmlreport.html'
-
-      - name: Pause for inspection
-        run: sleep 120  # Pauses the workflow for 30 seconds
+          name: html-report
+          path: testResults/htmlreport.html
 
       # - name: move report to workingdirectory
       #   run: |
