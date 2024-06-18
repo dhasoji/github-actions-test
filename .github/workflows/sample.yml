@@ -73,7 +73,7 @@ jobs:
         id: html_preview
         uses: pavi2410/html-preview-action@v2
         with:
-          html_file: 'testResults/htmlreport.html'
+          html_file: testResults/htmlreport.html
 
       # - name: move report to workingdirectory
       #   run: |
