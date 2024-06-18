@@ -52,7 +52,7 @@ jobs:
 
       # - name: Run Newman and Generate HTML Report
       #   run: |
-      #     npx newman run ".github//testfolder//API_Automation_Demo.postman_collection.json" -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+      #     npx newman run .github//testfolder//API_Automation_Demo.postman_collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
 
       - name: Get Files list first
         run: |
