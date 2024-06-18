@@ -71,7 +71,7 @@ jobs:
 
       - name: Print HTML report content
         run: |
-          cat htmlreport.html
+          cd testResults && cat htmlreport.html
 
       - name: HTML Preview
         id: html_preview
