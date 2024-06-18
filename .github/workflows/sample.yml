@@ -76,14 +76,18 @@ jobs:
       - name: List files for debugging
         run: ls -R testResults
       
-      - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v4.3.3
+      - name: create-report
+        # You may pin to the exact commit or the version.
+        # uses: michaelhenry/create-report@8b27e8b1446bf4a1d9af9e67431cc8c78fb3821d
+        uses: michaelhenry/create-report@v2.0.2
         with:
-          # Artifact name
-          name: # optional, default is artifact
-          # A file, directory or wildcard pattern that describes what to upload
-          path: 
-            testResults/htmlreport.html
+          # Title of the report
+          title: htmlreport
+          # File path of the report.
+          path: testResults/htmlreport.html
+          # The data format of the summary either markdown or html.
+          format: # optional, default is markdown
+                
       
                 
 
