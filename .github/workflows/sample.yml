@@ -68,12 +68,12 @@ jobs:
       - name: Get testResults folder files list
         run: |
           cd testResults && ls -lrt
-
-      - name: Archive HTML Report
-        uses: actions/upload-artifact@v2
+          
+      - name: HTML Preview
+        id: html_preview
+        uses: pavi2410/html-preview-action@v2
         with:
-          name: newman-report-${{ matrix.command }}
-          path: testResults/htmlreport.html 
+          html_file: 'testResults/htmlreport.html'
 
       # - name: move report to workingdirectory
       #   run: |
