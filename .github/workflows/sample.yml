@@ -69,6 +69,12 @@ jobs:
         run: |
           cd testResults && ls -lrt
 
+      - name: HTML Preview
+        id: html_preview
+        uses: pavi2410/html-preview-action@v2
+        with:
+          html_file: 'testResults/htmlreport.html'
+
       # - name: move report to workingdirectory
       #   run: |
       #     cp -f /mnt/c/Users/prave/Documents/KUBERNETES/POSTMAN/act/testResults/htmlreport.html C:\Users\prave\Documents\KUBERNETES\POSTMAN\ACT\
