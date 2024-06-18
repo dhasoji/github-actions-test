@@ -76,11 +76,16 @@ jobs:
       - name: List files for debugging
         run: ls -R testResults
       
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.3.3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./testResults
+          # Artifact name
+          name: # optional, default is artifact
+          # A file, directory or wildcard pattern that describes what to upload
+          path: 
+            testResults/htmlreport.html
+      
+                
 
       # - name: move report to workingdirectory
       #   run: |
