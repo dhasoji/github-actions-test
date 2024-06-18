@@ -76,11 +76,11 @@ jobs:
       - name: List files for debugging
         run: ls -R testResults
       
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: HTML Preview
+        id: html_preview
+        uses: pavi2410/html-preview-action@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./testResults/htmlreport.html
+            html_file: 'testResults/htmlreport.html'
                 
       
                 
