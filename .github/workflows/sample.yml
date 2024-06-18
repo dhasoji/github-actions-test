@@ -1,14 +1,81 @@
-name: shell Commands
+name: Run Commands
 
-on: [push]
+on: [push, pull_request]
+
 jobs:
-  run-shell-commands:
-    runs-on: windows-latest
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      commands: ${{ steps.get-commands.outputs.commands }}
+
     steps:
-       - name: echo a string
-         run: echo "Hello World"
-       - name: multiline script
-         run: |
-            node -v
-            npm -v
-       
+
+      - name: Install Node.js and Newman and newman-reporter-html
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21.5.0'  # You can adjust the Node.js version as needed
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Read commands from file
+        id: get-commands
+        run: |
+          commands=$(cat testfolder//commands.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "::set-output name=commands::${commands}"
+
+
+  run-commands:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command: ${{ fromJson(needs.prepare.outputs.commands) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+  # Install the newman command line utility and also install the html extra reporter
+      - name: Install newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+  # Make directory to upload the test results
+      - name: Make Directory for results
+        run: mkdir -p testResults
+      # - name: Pause for inspection
+      #   run: sleep 60  # Pauses the workflow for 30 seconds
+      # - name: Get Files list first
+      #   run: |
+      #     ls -lrt && pwd
+
+      # - name: Run Newman and Generate HTML Report
+      #   run: |
+      #     npx newman run ".github//testfolder//API_Automation_Demo.postman_collection.json" -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+
+      - name: Get Files list first
+        run: |
+          cd testResults && ls -lrt && pwd
+
+      - name: Run command
+        run: ${{ matrix.command }}
+
+      - name: Get Files list second
+        run: |
+          ls -lrt && pwd
+
+      - name: Get testResults folder files list
+        run: |
+          cd testResults && ls -lrt
+
+      - name: Archive HTML Report
+        if: success()
+        uses: actions/upload-artifact@v2
+        with:
+          name: newman-report-${{ matrix.command }}
+          path: testResults/*.html 
+
+      # - name: move report to workingdirectory
+      #   run: |
+      #     cp -f /mnt/c/Users/prave/Documents/KUBERNETES/POSTMAN/act/testResults/htmlreport.html C:\Users\prave\Documents\KUBERNETES\POSTMAN\ACT\

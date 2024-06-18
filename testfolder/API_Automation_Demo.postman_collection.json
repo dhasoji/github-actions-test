@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "4fbbb09d-1867-428a-9e65-60339d7f39fb",
+		"name": "API_Automation_Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2247049"
+	},
+	"item": [
+		{
+			"name": "Store_Demo",
+			"item": [
+				{
+					"name": "PathParamTest",
+					"item": [
+						{
+							"name": "Create_a_Pet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"//store petId into the collection variable\r",
+											"pm.collectionVariables.set('Pet_Id',pm.response.json().id);\r",
+											"\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 10,\r\n  \"name\": \"doggie_lima\",\r\n  \"category\": {\r\n    \"id\": 1,\r\n    \"name\": \"Dogs\"\r\n  },\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://petstore.swagger.io/v2/pet",
+									"protocol": "https",
+									"host": [
+										"petstore",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"v2",
+										"pet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetPet_byId",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"//Consider the API endpoint not available if the response time is equal to or longer than 1 second\r",
+											"pm.test(\"Response time is less than 1 second.\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://petstore3.swagger.io/api/v3/pet/findByStatus?status=available",
+									"protocol": "https",
+									"host": [
+										"petstore3",
+										"swagger",
+										"io"
+									],
+									"path": [
+										"api",
+										"v3",
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "available"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"\r",
+					"// const env = pm.environment.get(\"env\");\r",
+					"// console.log('Starting Execution of Einstein on on ${ env } Environment.')\r",
+					"// utils = {\r",
+					"//     // / **\r",
+					"//     // * To fetch all the properties within a response and append it in a array.\r",
+					"//     // * { obj? -> Complete response of a request.\r",
+					"//     // * [return} -> list of properties extracted from the response in the array.\r",
+					"//     // * /\r",
+					"\r",
+					"//     getProp: function (obj) {\r",
+					"//         let results = [];\r",
+					"//         for (const prop in obj) {\r",
+					"//             results.push(prop)\r",
+					"\r",
+					"//             if (typeof obj[prop] == 'object' & Array.isArray(obj[prop])) {\r",
+					"//                 if (typeof obj[prop][0] == 'object') {\r",
+					"//                     results = results.concat(this.getProp(obj[prop][0]))\r",
+					"//                 }\r",
+					"//             }\r",
+					"//             else if (typeof obj[prop] == 'object' & !Array.isArray(obj[prop])) {\r",
+					"//                 results = results.concat(this.getProp(obj[prop]))\r",
+					"//             }\r",
+					"//         }\r",
+					"//         return results\r",
+					"//     },\r",
+					"//     logger: function (log) {\r",
+					"//         console.log('--- ${log}')\r",
+					"//     },\r",
+					"\r",
+					"//     //             / **\r",
+					"//     // Comparing objects within a array to an assertion array.\r",
+					"//     // * { targetArray } -> Array of Objects which needs to be asserted.\r",
+					"//     // * { assertArray } -> Array which needs to be asserted with target array.\r",
+					"//     // * { return} > Boolean value, true -> if all the properties are present else false.\r",
+					"//     // * Y\r",
+					"//     compareObjectArrays: function (targetArray, assertArray) {\r",
+					"//         let isEqual;\r",
+					"//         for (let object of targetArray) {\r",
+					"//             let objectProperty = utils.getProp(object); //get all the response properties from a object.\r",
+					"//             isEqual = objectProperty.toString() === assertArray.toString(); //Comparing two arrays.\r",
+					"//             if (!isEqual) { return false } // returning false if any comparison fails within the object.\r",
+					"//         }\r",
+					"//         return isEqual\r",
+					"//     },\r",
+					"\r",
+					"//     // / **\r",
+					"//     // * To get a particular object within the objects of array.\r",
+					"//     // * {responseArray} -> Array of objects\r",
+					"//     // * [responseProp} -> Property to be used for filtering.\r",
+					"//     // * {propValue} -> Value of the property used for getting the object out of an array.\r",
+					"//     // * {return} -> Will return array with filtered obiects.\r",
+					"//     // */\r",
+					"\r",
+					"//     getArrayObjectsByProperty: function (responseArray, responseProp, propValue) {\r",
+					"//         // Array is filtered based on the property and type.\r",
+					"//         let filteredArray = responseArray.filter(object => object[responseProp] == propValue);\r",
+					"//         return filteredArray; // filteredArray returns erray of objects based on filter.\r",
+					"//     },\r",
+					"//     isIdenticalInString: function (iterable, char) {\r",
+					"//         // Check whether the string has same char\r",
+					"//         for (const value of iterable) {\r",
+					"//             if (value != char) {\r",
+					"//                 return false\r",
+					"//             }\r",
+					"//         }\r",
+					"//         return true\r",
+					"//     }\r",
+					"// }"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PetID",
+			"value": ""
+		},
+		{
+			"key": "test",
+			"value": "2142",
+			"type": "string"
+		},
+		{
+			"key": "test2",
+			"value": "234",
+			"type": "string"
+		},
+		{
+			"key": "Pet_Id",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,1 @@
+npx newman run "testfolder//API_Automation_Demo.postman_collection.json" -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
