@@ -86,7 +86,7 @@ jobs:
           # File path of the report.
           path: testResults/htmlreport.html
           # The data format of the summary either markdown or html.
-          format: # optional, default is markdown
+          format: html
                 
       
                 
